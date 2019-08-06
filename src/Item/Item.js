@@ -353,7 +353,11 @@ Item.prototype._destroy = function(removeElement) {
   this._drag && this._drag.destroy();
 
   // Remove all inline styles.
-  element.removeAttribute('style');
+  // NOTE: This condition prevents muuri from destroying style on safari and iOS
+  // original code did not include this check
+  if (navigator.vendor !== 'Apple Computer, Inc.') {
+    element.removeAttribute('style');
+  }
   this._child.removeAttribute('style');
 
   // Remove item class.
